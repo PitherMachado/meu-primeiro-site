@@ -70,3 +70,14 @@ body {
   }
 
 }
+.hero-content {
+  padding: 0 20px;
+}
+
+.hero-content h1 {
+  font-size: 28px;
+}
+
+.hero-content p {
+  font-size: 14px;
+}
