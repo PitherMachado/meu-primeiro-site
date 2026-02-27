@@ -52,6 +52,7 @@ body {
 
 .about-image {
   flex: 1;
+  min-width: 420px; /* impede a coluna da imagem de encolher demais */
 }
 
 .placeholder {
