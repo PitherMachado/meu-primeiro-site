@@ -23,7 +23,7 @@ body {
   text-align: center;
   padding: 0 20px;                    /* respiro lateral */
 background-size: 200% 200%;
-animation: backgroundMove 12s ease infinite;
+animation: backgroundMove 4s ease infinite;
 }
 
 .hero-content h1{
