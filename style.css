@@ -37,8 +37,8 @@ body {
 
 /* SEÇÃO 2 */
 .about {
-  padding: 80px 0;
-  background: #0e0e0e;
+  padding: 60px 0;
+  background: #0e0e0e;  
 }
 .about .container {
   display: flex;
