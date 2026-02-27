@@ -112,7 +112,11 @@ animation: backgroundMove 4s linear infinite;
   justify-content: space-between;
 width: 100%;
 }
-@media (max-width: 768px) {
+@media (max-width: 768px){
+
+  .authority-grid{
+    flex-direction: column;
+  }
 
   .about {
     flex-direction: column;
@@ -236,4 +240,53 @@ overflow: hidden;
 .step p{
   position: relative;
   z-index: 1;
+}
+.authority{
+  padding: 120px 10%;
+  background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+  text-align: center;
+}
+
+.authority-container h2{
+  font-size: 36px;
+  margin-bottom: 80px;
+}
+
+.authority-grid{  
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 80px;
+}
+
+.authority-card{
+  flex: 1;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #111827, #0b1220);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  transition: 0.4s ease;
+}
+
+.authority-card:hover{
+  transform: translateY(-10px);
+}
+
+.authority-card h3{
+  margin-bottom: 20px;
+}
+
+.authority-card.highlight{
+  border: 1px solid rgba(59,130,246,0.4);
+  box-shadow: 0 0 40px rgba(59,130,246,0.2);
+}
+
+.authority-cta h3{
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.authority-cta .btn{
+  font-size: 18px;
+  padding: 16px 40px;
 }
