@@ -38,9 +38,12 @@ body {
 /* SEÇÃO 2 */
 .about {
   display: flex;
-  padding: 80px 10%;
   gap: 50px;
   align-items: center;
+
+  padding: 80px 20px;     /* respiro consistente */
+  max-width: 1200px;      /* limite profissional */
+  margin: 0 auto;         /* centraliza o bloco */
 }
 
 .about-text {
