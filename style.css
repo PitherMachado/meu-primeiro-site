@@ -11,7 +11,9 @@ body {
 /* HERO */
 .hero{
   min-height: 100vh;                  /* ocupa pelo menos 1 tela inteira */
-  background: linear-gradient(135deg, #000000, #1a1a1a);
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 40%),
+            radial-gradient(circle at 70% 70%, rgba(255,255,255,0.03), transparent 50%),
+            linear-gradient(135deg, #000000, #111827);
   color: #ffffff;
 
   display: flex;                      /* ativa layout flex */
