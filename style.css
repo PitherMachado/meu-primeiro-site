@@ -58,3 +58,15 @@ body {
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 768px) {
+
+  .about {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+}
