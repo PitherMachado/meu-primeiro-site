@@ -53,13 +53,12 @@ body {
   gap: 50px;
   align-items: center;
 }
-.about-text h2 {
-   font-size: 32px;
-  margin-bottom: 20px;
-  font-size: 28px;
-  margin-bottom: 15px;
+.about-text h2{
+  font-size: 34px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
-
 .about-image {
   flex: 1;
   min-width: 420px; /* impede a coluna da imagem de encolher demais */
