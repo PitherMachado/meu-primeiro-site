@@ -6,13 +6,17 @@ body {
 }
 
 /* HERO */
-.hero {
-  height: 100vh; /* ocupa exatamente a altura da tela */
-  display: flex;
-  align-items: center; /* centraliza verticalmente */
-  justify-content: center; /* centraliza horizontalmente */
+.hero{
+  min-height: 100vh;                  /* ocupa pelo menos 1 tela inteira */
+  background: linear-gradient(135deg, #000000, #1a1a1a);
+  color: #ffffff;
+
+  display: flex;                      /* ativa layout flex */
+  align-items: center;                /* centraliza verticalmente */
+  justify-content: center;            /* centraliza horizontalmente */
+
   text-align: center;
-  background: linear-gradient(to bottom, #000000, #0f172a);
+  padding: 0 20px;                    /* respiro lateral */
 }
 
 .hero-content h1 {
