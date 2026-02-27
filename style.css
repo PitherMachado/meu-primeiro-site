@@ -37,8 +37,8 @@ body {
 
 /* SEÇÃO 2 */
 .about {
-  padding: 60px 0;
-  background: #141414; /* mais claro que o hero */
+  padding: 100px 10%;
+  background: #1e293b; /* azul acinzentado bem mais claro */
 }
 .about .container {
   display: flex;
