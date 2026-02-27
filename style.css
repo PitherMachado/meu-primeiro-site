@@ -61,6 +61,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 @media (max-width: 768px) {
 
   .about {
@@ -83,9 +88,4 @@ body {
 
 .hero-content p {
   font-size: 14px;
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
