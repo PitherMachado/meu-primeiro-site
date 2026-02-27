@@ -24,9 +24,14 @@ body {
   padding: 0 20px;                    /* respiro lateral */
 }
 
-.hero-content h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
+.hero-content h1{
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  background: linear-gradient(90deg, #ffffff, #cfd8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-content p {
