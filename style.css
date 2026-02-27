@@ -141,24 +141,27 @@ width: 100%;
   100% { background-position: 0% 50%; }
 }
 .benefits{
-  padding: 100px 10%;
-  background: #0b1220;
+  padding: 120px 10%;
+  background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
 }
 
 .benefits-container{
   display: flex;
   gap: 40px;
   justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .benefit{
-  background: linear-gradient(145deg, #111827, #0f172a);
-  padding: 40px;
-  border-radius: 16px;
+  background: linear-gradient(145deg, #111827, #0b1220);
+  padding: 50px 40px;
+  border-radius: 20px;
   flex: 1;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .benefit:hover{
