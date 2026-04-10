@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedrinho vs Dragoes Bobos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Pedrinho vs Dragões Bobos</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body {
       margin: 0;
       padding: 0;
@@ -13,74 +14,181 @@
       background: linear-gradient(to bottom, #8ed6ff 0%, #b9ecff 60%, #f6fbff 100%);
       font-family: Arial, Helvetica, sans-serif;
       user-select: none;
-      cursor: default;
+      touch-action: none;
     }
-    canvas {
-      display: block;
-    }
-    #hud {
-      position: fixed;
-      top: 14px;
-      left: 14px;
-      z-index: 20;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      padding: 12px 14px;
-      border-radius: 14px;
-      min-width: 280px;
-      line-height: 1.35;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    #hud .title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #ffe066;
-    }
-    #hud .small {
-      font-size: 12px;
-      opacity: 0.95;
-    }
-    #overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.48);
-      z-index: 30;
-    }
-    #overlayBox {
-      width: min(92vw, 700px);
-      background: linear-gradient(180deg, #fff 0%, #eef8ff 100%);
-      border-radius: 24px;
-      padding: 30px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      text-align: center;
-      border: 3px solid #1f6feb22;
-    }
-    #overlayBox h1 {
-      margin: 0 0 10px;
-      font-size: clamp(28px, 5vw, 48px);
-      color: #1f4b8f;
-    }
-    #overlayBox p {
-      margin: 8px 0;
-      color: #1e2d3d;
-      font-size: clamp(16px, 2vw, 20px);
-    }
-    #overlayBox button {
-      margin-top: 18px;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 22px;
-      font-size: 18px;
-      font-weight: 700;
-      background: #ffb703;
-      color: #1d1d1d;
-      box-shadow: 0 8px 20px rgba(255,183,3,0.35);
-    }
+    canvas { display: block; }
+
+```
+#hud {
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top));
+  left: max(10px, env(safe-area-inset-left));
+  z-index: 20;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 14px;
+  min-width: 240px;
+  line-height: 1.35;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.15);
+  max-width: min(92vw, 420px);
+}
+#hud .title {
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #ffe066;
+}
+#hud .small {
+  font-size: clamp(10px, 1.5vw, 12px);
+  opacity: 0.95;
+}
+
+#rotateHint {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: rgba(8,12,20,0.92);
+  color: #fff;
+  z-index: 60;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+#touchControls {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  display: none;
+}
+.touch-left, .touch-right {
+  position: absolute;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  pointer-events: none;
+}
+.touch-left {
+  left: max(14px, env(safe-area-inset-left));
+}
+.touch-right {
+  right: max(14px, env(safe-area-inset-right));
+}
+.touch-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35);
+  background: rgba(20, 26, 40, 0.42);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.18);
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+.btn:active, .btn.pressed {
+  transform: scale(0.96);
+  background: rgba(57, 82, 124, 0.7);
+}
+.btn.jump {
+  width: 96px;
+  height: 96px;
+  font-size: 16px;
+  background: rgba(38, 92, 182, 0.48);
+}
+.btn.attack { background: rgba(195, 77, 77, 0.48); }
+.btn.defend { background: rgba(65, 130, 98, 0.48); }
+.btn.dance { background: rgba(145, 81, 170, 0.48); }
+.btn.move { background: rgba(36, 86, 130, 0.48); }
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.48);
+  z-index: 50;
+}
+#overlayBox {
+  width: min(92vw, 700px);
+  background: linear-gradient(180deg, #fff 0%, #eef8ff 100%);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  text-align: center;
+  border: 3px solid #1f6feb22;
+}
+#overlayBox h1 {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 5vw, 48px);
+  color: #1f4b8f;
+}
+#overlayBox p {
+  margin: 8px 0;
+  color: #1e2d3d;
+  font-size: clamp(16px, 2vw, 20px);
+}
+#overlayBox button {
+  margin-top: 18px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 22px;
+  font-size: 18px;
+  font-weight: 700;
+  background: #ffb703;
+  color: #1d1d1d;
+  box-shadow: 0 8px 20px rgba(255,183,3,0.35);
+}
+
+@media (max-width: 900px) {
+  #hud {
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+  .btn {
+    width: 68px;
+    height: 68px;
+    font-size: 13px;
+  }
+  .btn.jump {
+    width: 88px;
+    height: 88px;
+  }
+}
+
+@media (max-width: 720px) {
+  #hud .small { display: none; }
+  .btn {
+    width: 62px;
+    height: 62px;
+    font-size: 12px;
+  }
+  .btn.jump {
+    width: 82px;
+    height: 82px;
+  }
+}
+```
+
   </style>
 </head>
 <body>
@@ -88,7 +196,26 @@
     <div class="title">Pedrinho vs Dragões Bobos</div>
     <div id="hudStats"></div>
     <div class="small">
-      W = frente • S = trás • SPACE = pulo • D = joga pedra • A = defesa • Clique esquerdo = dança engraçada • R = reiniciar
+      PC: W frente • S trás • D pedra • A defesa • SPACE pulo • Clique esquerdo dança • R reiniciar
+    </div>
+  </div>
+
+  <div id="rotateHint">Vire o celular para a horizontal para jogar melhor.</div>
+
+  <div id="touchControls">
+    <div class="touch-left">
+      <button class="btn move" data-action="back">TRÁS</button>
+      <button class="btn move" data-action="forward">FRENTE</button>
+    </div>
+    <div class="touch-right">
+      <div class="touch-col">
+        <button class="btn dance" data-action="dance">DANÇA</button>
+        <button class="btn defend" data-action="defend">DEF</button>
+      </div>
+      <div class="touch-col">
+        <button class="btn attack" data-action="attack">PEDRA</button>
+        <button class="btn jump" data-action="jump">PULO</button>
+      </div>
     </div>
   </div>
 
@@ -100,7 +227,7 @@
     </div>
   </div>
 
-  <canvas id="game"></canvas>
+<canvas id="game"></canvas>
 
   <script>
     const canvas = document.getElementById('game');
@@ -109,16 +236,52 @@
     const overlay = document.getElementById('overlay');
     const overlayTitle = document.getElementById('overlayTitle');
     const overlayText = document.getElementById('overlayText');
+    const rotateHint = document.getElementById('rotateHint');
+    const touchControls = document.getElementById('touchControls');
+
+    const touchState = {
+      forward: false,
+      back: false,
+      attack: false,
+      defend: false,
+      jump: false,
+      dance: false,
+    };
+
+    function isMobileLike() {
+      return matchMedia('(pointer: coarse)').matches || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    }
 
     function resize() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      updateMobileUI();
     }
     window.addEventListener('resize', resize);
+    window.addEventListener('orientationchange', resize);
     resize();
 
+    function updateMobileUI() {
+      const mobile = isMobileLike();
+      touchControls.style.display = mobile ? 'block' : 'none';
+      const portrait = mobile && window.innerHeight > window.innerWidth;
+      rotateHint.style.display = portrait ? 'flex' : 'none';
+    }
+
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      const action = btn.dataset.action;
+      const setState = (value) => {
+        touchState[action] = value;
+        btn.classList.toggle('pressed', value);
+      };
+      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); setState(true); });
+      btn.addEventListener('pointerup', (e) => { e.preventDefault(); setState(false); });
+      btn.addEventListener('pointercancel', () => setState(false));
+      btn.addEventListener('pointerleave', () => setState(false));
+    });
+
     const GRAVITY = 0.75;
-    const GROUND_Y = () => canvas.height - 120;
+    const GROUND_Y = () => canvas.height - (isMobileLike() ? 92 : 120);
     const WORLD_WIDTH = 6200;
     const FLAG_X = 5860;
     const keys = {};
@@ -140,7 +303,7 @@
       keys[e.key.toLowerCase()] = false;
     });
     window.addEventListener('mousedown', (e) => {
-      if (e.button === 0) mouseDanceRequested = true;
+      if (e.button === 0 && !isMobileLike()) mouseDanceRequested = true;
     });
 
     function rectsOverlap(a, b) {
@@ -150,6 +313,13 @@
     function clamp(v, min, max) {
       return Math.max(min, Math.min(max, v));
     }
+
+    function pressedForward() { return keys['w'] || touchState.forward; }
+    function pressedBack() { return keys['s'] || touchState.back; }
+    function pressedAttack() { return keys['d'] || touchState.attack; }
+    function pressedDefend() { return keys['a'] || touchState.defend; }
+    function pressedJump() { return keys[' '] || touchState.jump; }
+    function pressedDance() { return touchState.dance; }
 
     function createGameState() {
       return {
@@ -171,7 +341,7 @@
           vx: 0,
           vy: 0,
           facing: 1,
-          speed: 4.1,
+          speed: isMobileLike() ? 4.6 : 4.1,
           jumpPower: -15.5,
           grounded: false,
           hp: 5,
@@ -181,6 +351,7 @@
           invincibleTimer: 0,
           danceTimer: 0,
           throwCooldown: 0,
+          jumpBuffer: 0,
           animTime: 0
         }
       };
@@ -262,6 +433,7 @@
     function restartGame() {
       state = createGameState();
       overlay.style.display = 'none';
+      Object.keys(touchState).forEach(k => touchState[k] = false);
     }
 
     function endGame(win, text) {
@@ -288,24 +460,27 @@
 
     function update() {
       if (state.gameOver) return;
+      updateMobileUI();
 
       const p = state.player;
       p.animTime += 1;
-      p.defend = !!keys['a'];
+      p.defend = !!pressedDefend();
 
-      if (mouseDanceRequested && p.grounded) {
+      if ((mouseDanceRequested || pressedDance()) && p.grounded) {
         p.danceTimer = 50;
-        mouseDanceRequested = false;
       }
+
+      if (pressedJump()) p.jumpBuffer = 6;
+      if (p.jumpBuffer > 0) p.jumpBuffer--;
 
       if (p.danceTimer > 0) {
         p.danceTimer--;
         p.vx = Math.sin(p.animTime * 0.55) * 2.5;
       } else {
-        if (keys['w']) {
+        if (pressedForward()) {
           p.vx = p.speed;
           p.facing = 1;
-        } else if (keys['s']) {
+        } else if (pressedBack()) {
           p.vx = -p.speed;
           p.facing = -1;
         } else {
@@ -313,15 +488,16 @@
           if (Math.abs(p.vx) < 0.15) p.vx = 0;
         }
 
-        if (keys[' '] && p.grounded) {
+        if (p.jumpBuffer > 0 && p.grounded) {
           p.vy = p.jumpPower;
           p.grounded = false;
+          p.jumpBuffer = 0;
         }
       }
 
-      if ((keys['d']) && p.throwCooldown <= 0 && p.stones > 0) {
+      if (pressedAttack() && p.throwCooldown <= 0 && p.stones > 0) {
         p.stones--;
-        p.throwCooldown = 18;
+        p.throwCooldown = isMobileLike() ? 15 : 18;
         state.projectiles.push({
           x: p.x + p.w / 2,
           y: p.y + 30,
@@ -431,9 +607,7 @@
             p.hp--;
             p.invincibleTimer = 55;
             spawnParticles(p.x + p.w / 2, p.y + 20, '#ff4d6d', 16);
-            if (p.hp <= 0) {
-              endGame(false, 'Pedrinho foi torrado pelos dragões bobos. Aperte o botão e tente de novo.');
-            }
+            if (p.hp <= 0) endGame(false, 'Pedrinho foi torrado pelos dragões bobos. Aperte o botão e tente de novo.');
           }
         }
       }
@@ -450,9 +624,7 @@
             p.vx = enemy.x > p.x ? -5 : 5;
             p.vy = -6;
             spawnParticles(p.x + p.w / 2, p.y + 20, '#ff4d6d', 14);
-            if (p.hp <= 0) {
-              endGame(false, 'Os inimigos engraçados venceram essa rodada. Bora tentar de novo.');
-            }
+            if (p.hp <= 0) endGame(false, 'Os inimigos engraçados venceram essa rodada. Bora tentar de novo.');
           }
         }
       }
@@ -465,36 +637,27 @@
       }
       state.particles = state.particles.filter(pt => pt.life > 0);
 
-      if (p.x + p.w >= FLAG_X) {
-        endGame(true, `Você chegou na bandeirinha com ${p.score} pontos e ${p.hp} corações restantes.`);
-      }
+      if (p.x + p.w >= FLAG_X) endGame(true, `Você chegou na bandeirinha com ${p.score} pontos e ${p.hp} corações restantes.`);
 
-      state.cameraX = clamp(p.x - canvas.width * 0.35, 0, WORLD_WIDTH - canvas.width);
+      const cameraLookAhead = isMobileLike() ? canvas.width * 0.42 : canvas.width * 0.35;
+      state.cameraX = clamp(p.x - cameraLookAhead, 0, WORLD_WIDTH - canvas.width);
       mouseDanceRequested = false;
     }
 
     function drawBackground() {
       const cam = state.cameraX;
-
       ctx.fillStyle = '#8ed6ff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      for (const c of clouds) {
-        const x = c.x - cam * 0.2;
-        const y = c.y;
-        drawCloud(x, y, c.s);
-      }
-
+      for (const c of clouds) drawCloud(c.x - cam * 0.2, c.y, c.s);
       drawMountainRange(0.15, 430, '#91c483', '#6ea96b');
       drawMountainRange(0.28, 520, '#7db36f', '#5d9657');
 
-      // chão principal
       ctx.fillStyle = '#6b8f3e';
       ctx.fillRect(0, GROUND_Y(), canvas.width, canvas.height - GROUND_Y());
       ctx.fillStyle = '#7f5539';
       ctx.fillRect(0, GROUND_Y() + 28, canvas.width, canvas.height - (GROUND_Y() + 28));
 
-      // linha decorativa do chão
       for (let i = -1; i < canvas.width / 44 + 2; i++) {
         ctx.fillStyle = i % 2 === 0 ? '#7fbf4d' : '#8dcb56';
         ctx.fillRect(i * 44, GROUND_Y(), 24, 14);
@@ -519,7 +682,7 @@
       const cam = state.cameraX * parallax;
       for (let x = -300; x < WORLD_WIDTH; x += step) {
         const sx = x - cam;
-        const baseY = canvas.height - 120;
+        const baseY = canvas.height - (isMobileLike() ? 92 : 120);
         ctx.fillStyle = ((x / step) % 2 === 0) ? colorA : colorB;
         ctx.beginPath();
         ctx.moveTo(sx, baseY);
@@ -601,17 +764,14 @@
       ctx.rotate(danceRot);
       ctx.scale(p.facing, 1);
 
-      // sombra
       ctx.fillStyle = 'rgba(0,0,0,0.18)';
       ctx.beginPath();
       ctx.ellipse(0, p.h / 2 + 8, 22, 8, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // capa traseira
       ctx.fillStyle = '#3a86ff';
       roundRect(-14, -10, 26, 42, 10, true);
 
-      // pernas
       const legSwing = p.danceTimer > 0 ? Math.sin(p.animTime * 0.9) * 10 : Math.sin(p.animTime * 0.35) * Math.min(8, Math.abs(p.vx) * 2.3);
       ctx.fillStyle = '#2d2a32';
       roundRect(-16, 22, 12, 34, 6, true);
@@ -620,13 +780,11 @@
       roundRect(-20 + legSwing * 0.15, 48, 18, 10, 6, true);
       roundRect(2 - legSwing * 0.15, 48, 18, 10, 6, true);
 
-      // corpo
       ctx.fillStyle = '#ffd166';
       roundRect(-20, -16, 40, 42, 14, true);
       ctx.fillStyle = '#ff5d8f';
       roundRect(-10, -8, 20, 18, 8, true);
 
-      // braços
       let armY = -2;
       let leftArmRot = p.defend ? -0.8 : (p.danceTimer > 0 ? Math.sin(p.animTime * 0.85) * 1.2 : 0.2);
       let rightArmRot = p.danceTimer > 0 ? -Math.sin(p.animTime * 0.85) * 1.2 : -0.2;
@@ -652,38 +810,30 @@
       roundRect(-6, -4, 12, 30, 6, true);
       ctx.restore();
 
-      // cabeça
       ctx.fillStyle = '#ffddb3';
       ctx.beginPath();
       ctx.arc(0, -32, 22, 0, Math.PI * 2);
       ctx.fill();
 
-      // cabelo
       ctx.fillStyle = '#6a4c2a';
       ctx.beginPath();
       ctx.arc(0, -38, 18, Math.PI, Math.PI * 2);
       ctx.fill();
       ctx.fillRect(-14, -38, 28, 10);
 
-      // olhos
       ctx.fillStyle = '#222';
       ctx.beginPath();
       ctx.arc(-7, -34, 2.5, 0, Math.PI * 2);
       ctx.arc(7, -34, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // boca
       ctx.strokeStyle = '#b03a5b';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      if (p.danceTimer > 0) {
-        ctx.arc(0, -25, 8, 0.2, Math.PI - 0.2);
-      } else {
-        ctx.arc(0, -26, 6, 0.1, Math.PI - 0.1);
-      }
+      if (p.danceTimer > 0) ctx.arc(0, -25, 8, 0.2, Math.PI - 0.2);
+      else ctx.arc(0, -26, 6, 0.1, Math.PI - 0.1);
       ctx.stroke();
 
-      // boné/tiara engraçada
       ctx.fillStyle = '#06d6a0';
       roundRect(-18, -52, 36, 10, 5, true);
       ctx.fillStyle = '#ffffff';
@@ -704,26 +854,21 @@
       ctx.translate(x + enemy.w / 2, y + enemy.h / 2);
       ctx.scale(enemy.dir < 0 ? -1 : 1, 1);
 
-      // sombra
       ctx.fillStyle = 'rgba(0,0,0,0.16)';
       ctx.beginPath();
       ctx.ellipse(0, enemy.h / 2 + 8, enemy.w * 0.28, 7, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // corpo
       ctx.fillStyle = enemy.boss ? '#9b5de5' : '#ff7b54';
       roundRect(-enemy.w * 0.38, -enemy.h * 0.26, enemy.w * 0.76, enemy.h * 0.62, 20, true);
 
-      // barriga
       ctx.fillStyle = enemy.boss ? '#d0b3ff' : '#ffd6a5';
       roundRect(-enemy.w * 0.18, -enemy.h * 0.04, enemy.w * 0.36, enemy.h * 0.28, 14, true);
 
-      // asas pequenas engraçadas
       ctx.fillStyle = '#ffcad4';
       roundRect(-enemy.w * 0.48, -enemy.h * 0.12, enemy.w * 0.14, enemy.h * 0.25, 10, true);
       roundRect(enemy.w * 0.34, -enemy.h * 0.12, enemy.w * 0.14, enemy.h * 0.25, 10, true);
 
-      // olhos
       ctx.fillStyle = '#fff';
       ctx.beginPath();
       ctx.arc(-10, -16, 8, 0, Math.PI * 2);
@@ -735,27 +880,21 @@
       ctx.arc(12, -15, 3, 0, Math.PI * 2);
       ctx.fill();
 
-      // chifres
       ctx.fillStyle = '#f4f1de';
-      ctx.beginPath();
-      ctx.moveTo(-18, -32); ctx.lineTo(-10, -48); ctx.lineTo(-2, -30); ctx.closePath(); ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(6, -30); ctx.lineTo(14, -48); ctx.lineTo(22, -32); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-18, -32); ctx.lineTo(-10, -48); ctx.lineTo(-2, -30); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(6, -30); ctx.lineTo(14, -48); ctx.lineTo(22, -32); ctx.closePath(); ctx.fill();
 
-      // boca
       ctx.fillStyle = '#8d0801';
       roundRect(-16, 0, 32, 14, 7, true);
       ctx.fillStyle = '#ffd166';
       ctx.fillRect(-10, 0, 4, 7);
       ctx.fillRect(6, 0, 4, 7);
 
-      // label de hp
       ctx.scale(enemy.dir < 0 ? -1 : 1, 1);
       ctx.fillStyle = 'rgba(0,0,0,0.65)';
       roundRect(-30, -enemy.h / 2 - 22, 60, 10, 5, true);
       ctx.fillStyle = '#ef476f';
       roundRect(-30, -enemy.h / 2 - 22, (enemy.hp / (enemy.boss ? 6 : 2)) * 60, 10, 5, true);
-
       ctx.restore();
     }
 
@@ -846,7 +985,9 @@
       requestAnimationFrame(loop);
     }
 
+    updateMobileUI();
     loop();
   </script>
+
 </body>
 </html>
